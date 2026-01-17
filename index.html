@@ -7,121 +7,70 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <style>
 * { box-sizing: border-box; }
+body { margin:0; font-family:'Montserrat',sans-serif; color:#fff; background:#000; overflow-x:hidden; }
 
-body {
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
-    color: #fff;
-    background: #000;
-    overflow-x: hidden;
-}
-
-/* ===== фон с котятами ===== */
+/* ===== фон котят ===== */
 .bg-fallback {
-    position: fixed;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: -4;
-    transition: background-image 1.5s ease-in-out;
+    position: fixed; inset:0;
+    background-size: cover; background-position: center;
+    z-index: -4; transition: background-image 1.5s ease-in-out;
 }
 .bg-video {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -3;
-    filter: brightness(0.6);
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    object-fit: cover; z-index:-3; filter: brightness(0.6);
 }
 
 /* ===== overlay ===== */
 .overlay {
-    min-height: 100vh;
+    min-height:100vh;
     background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.9));
-    backdrop-filter: blur(5px);
-    padding: 40px 20px 120px;
+    backdrop-filter: blur(5px); padding:40px 20px 120px;
 }
 
 /* ===== заголовок ===== */
-h1 {
-    text-align: center;
-    font-size: clamp(32px, 6vw, 64px);
-    font-weight: 900;
-    margin-bottom: 10px;
-    text-shadow: 0 0 40px #ff0055;
-}
-.subtitle {
-    text-align: center;
-    opacity: 0.85;
-    margin-bottom: 30px;
-}
+h1 { text-align:center; font-size:clamp(32px,6vw,64px); font-weight:900; margin-bottom:10px; text-shadow:0 0 40px #ff0055;}
+.subtitle { text-align:center; opacity:0.85; margin-bottom:30px;}
 
 /* ===== кнопка ===== */
-.buy {
-    display: block;
-    margin: 0 auto 50px;
-    padding: 18px 42px;
-    font-size: 18px;
-    font-weight: 900;
-    color: #fff;
-    text-decoration: none;
-    background: linear-gradient(135deg, #ff0055, #ff7a00);
-    border-radius: 50px;
-    width: fit-content;
-    box-shadow: 0 20px 60px rgba(255,0,85,0.7);
-    transition: 0.3s;
-}
+.buy { display:block; margin:0 auto 50px; padding:18px 42px; font-size:18px; font-weight:900;
+color:#fff; text-decoration:none; background: linear-gradient(135deg,#ff0055,#ff7a00);
+border-radius:50px; width:fit-content; box-shadow:0 20px 60px rgba(255,0,85,0.7); transition:0.3s; }
 .buy:hover { transform: scale(1.1); }
 
-/* ===== интерактивная карта ===== */
-#map {
-    height: 550px;
-    max-width: 1200px;
-    margin: 60px auto;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-}
+/* ===== карта ===== */
+#map { height:550px; max-width:1200px; margin:60px auto; border-radius:20px; box-shadow:0 15px 40px rgba(0,0,0,0.6); }
 
 /* ===== список городов ===== */
 .cities {
-    max-width: 1200px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 18px;
-    margin-top: 50px;
-    margin-bottom: 80px;
+    max-width:1200px; margin:auto; display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:18px;
+    margin-top:50px; margin-bottom:80px;
 }
 .city {
-    padding: 15px;
-    text-align: center;
-    background: rgba(255,255,255,0.08);
-    border-radius: 18px;
-    text-decoration: none;
-    color: #fff;
-    font-weight: 600;
-    border: 1px solid rgba(255,255,255,0.15);
-    transition: 0.35s;
+    padding:15px; text-align:center; background:rgba(255,255,255,0.08);
+    border-radius:18px; text-decoration:none; color:#fff; font-weight:600;
+    border:1px solid rgba(255,255,255,0.15); transition:0.35s;
 }
-.city:hover {
-    transform: translateY(-8px) scale(1.08);
-    background: linear-gradient(135deg, #ff0055, #ff7a00);
-    box-shadow: 0 15px 40px rgba(255,0,85,0.7);
+.city:hover { transform: translateY(-8px) scale(1.08); background: linear-gradient(135deg,#ff0055,#ff7a00);
+    box-shadow:0 15px 40px rgba(255,0,85,0.7);
 }
 
 /* ===== футер ===== */
-.footer {
-    text-align: center;
-    margin-top: 80px;
-    opacity: 0.6;
-    font-size: 14px;
-}
+.footer { text-align:center; margin-top:80px; opacity:0.6; font-size:14px; }
 
 /* ===== мобильная адаптация ===== */
-@media (max-width: 600px){
-    h1 { font-size: 32px; }
-    #map { height: 400px; }
+@media(max-width:600px){ h1{font-size:32px;} #map{height:400px;} }
+
+/* ===== неоновые маркеры ===== */
+.neon-marker .glow {
+    width:16px; height:16px; border-radius:50%;
+    background:#ff0055;
+    box-shadow:0 0 12px #ff0055,0 0 20px #ff3399,0 0 30px #ff66cc;
+    animation: neonPulse 1.5s infinite alternate;
+}
+@keyframes neonPulse{
+    0% { box-shadow:0 0 12px #ff0055,0 0 20px #ff3399,0 0 30px #ff66cc; transform:scale(1);}
+    100% { box-shadow:0 0 18px #ff0055,0 0 30px #ff3399,0 0 45px #ff66cc; transform:scale(1.2);}
 }
 </style>
 </head>
@@ -138,11 +87,10 @@ h1 {
 
 <a class="buy" href="https://vk.ru/antihype_shokata" target="_blank">КУПИТЬ БИЛЕТ</a>
 
-<!-- интерактивная карта -->
 <div id="map"></div>
 
-<!-- список всех 100 городов -->
 <div class="cities">
+<!-- Ниже все 100 городов как ссылки -->
 <a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Москва</a>
 <a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Санкт-Петербург</a>
 <a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Новосибирск</a>
@@ -153,22 +101,19 @@ h1 {
 <a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Самара</a>
 <a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Омск</a>
 <a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Ростов-на-Дону</a>
-<!-- Добавьте остальные города до 100 -->
+<!-- Добавь остальные города до 100 по этой схеме -->
 </div>
 
 <div class="footer">© Тур по 100 городам • котята • антихайп</div>
 </div>
 
-<!-- Leaflet.js -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-// инициализация карты
-var map = L.map('map').setView([61, 105], 3);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap'
-}).addTo(map);
+// карта
+var map = L.map('map').setView([61,105],3);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
 
-// координаты 100 крупнейших городов России
+// массив всех городов
 const cities = [
   {name:"Москва",lat:55.7558,lon:37.6173},{name:"Санкт-Петербург",lat:59.9343,lon:30.3351},
   {name:"Новосибирск",lat:55.0084,lon:82.9357},{name:"Екатеринбург",lat:56.8389,lon:60.6057},
@@ -184,30 +129,59 @@ const cities = [
   {name:"Иркутск",lat:52.2864,lon:104.3050},{name:"Хабаровск",lat:48.4827,lon:135.0838},
   {name:"Ярославль",lat:57.6261,lon:39.8938},{name:"Владивосток",lat:43.1155,lon:131.8855},
   {name:"Махачкала",lat:42.9849,lon:47.5047},{name:"Томск",lat:56.4977,lon:84.9744},
-  {name:"Оренбург",lat:51.7682,lon:55.0968},{name:"Кемерово",lat:55.3549,lon:86.0873}
-  // добавьте остальные города здесь
+  {name:"Оренбург",lat:51.7682,lon:55.0968},{name:"Кемерово",lat:55.3549,lon:86.0873},
+  {name:"Новокузнецк",lat:53.7948,lon:87.2020},{name:"Рязань",lat:54.6198,lon:39.7449},
+  {name:"Астрахань",lat:46.3470,lon:48.0330},{name:"Набережные Челны",lat:55.7430,lon:52.3956},
+  {name:"Пенза",lat:53.1959,lon:45.0182},{name:"Липецк",lat:52.6112,lon:39.5941},
+  {name:"Киров",lat:58.6039,lon:49.6676},{name:"Чебоксары",lat:56.1466,lon:47.2514},
+  {name:"Тула",lat:54.2045,lon:37.6118},{name:"Калининград",lat:54.7104,lon:20.4522},
+  {name:"Брянск",lat:53.2521,lon:34.3717},{name:"Курск",lat:51.7300,lon:36.1928},
+  {name:"Иваново",lat:56.9997,lon:40.9728},{name:"Сочи",lat:43.6028,lon:39.7342},
+  {name:"Белгород",lat:50.5956,lon:36.5872},{name:"Архангельск",lat:64.5390,lon:40.5164},
+  {name:"Владимир",lat:56.1291,lon:40.4063},{name:"Смоленск",lat:54.7820,lon:32.0450},
+  {name:"Саранск",lat:54.1805,lon:45.1885},{name:"Якутск",lat:62.0355,lon:129.6755},
+  {name:"Петрозаводск",lat:61.7853,lon:34.3463},{name:"Вологда",lat:59.2205,lon:39.8915},
+  {name:"Тамбов",lat:52.7211,lon:41.4527},{name:"Кострома",lat:57.7676,lon:40.9264},
+  {name:"Псков",lat:57.8194,lon:28.3318},{name:"Мурманск",lat:68.9792,lon:33.0912},
+  {name:"Нальчик",lat:43.4840,lon:43.6028},{name:"Грозный",lat:43.3178,lon:45.6980},
+  {name:"Элиста",lat:46.3081,lon:44.2705},{name:"Магадан",lat:59.5683,lon:150.8089},
+  {name:"Великий Новгород",lat:58.5215,lon:31.2755},{name:"Стерлитамак",lat:53.6304,lon:55.9500},
+  {name:"Новороссийск",lat:44.7230,lon:37.7680},{name:"Курган",lat:55.4578,lon:65.3452},
+  {name:"Севастополь",lat:44.6168,lon:33.5251},{name:"Калуга",lat:54.5294,lon:36.2756},
+  {name:"Тверь",lat:56.8586,lon:35.9006},{name:"Сыктывкар",lat:61.6667,lon:50.8333},
+  {name:"Череповец",lat:59.1269,lon:37.9097},{name:"Йошкар-Ола",lat:56.6384,lon:47.8880},
+  {name:"Нижний Тагил",lat:57.9100,lon:59.9814},{name:"Орёл",lat:52.9617,lon:36.0657},
+  {name:"Салават",lat:53.3620,lon:55.9220},{name:"Благовещенск",lat:50.2900,lon:127.5275},
+  {name:"Великие Луки",lat:56.3417,lon:30.5464},{name:"Петропавловск-Камчатский",lat:53.0168,lon:158.6486},
+  {name:"Чита",lat:52.0333,lon:113.5000},{name:"Муром",lat:55.5750,lon:42.0447},
+  {name:"Нижнекамск",lat:55.6365,lon:51.8120},{name:"Арзамас",lat:55.3942,lon:43.8408},
+  {name:"Ковров",lat:56.3571,lon:41.3190},{name:"Новошахтинск",lat:47.7560,lon:40.2183},
+  {name:"Нефтекамск",lat:56.0903,lon:54.2517}
 ];
 
-// создаём метки на карте
-cities.forEach(city=>{
-  L.marker([city.lat,city.lon]).addTo(map)
-    .bindPopup(`<a href="https://vk.ru/antihype_shokata" target="_blank">${city.name}</a>`);
-});
+// функция для неоновых маркеров
+function createNeonMarker(lat, lon, name) {
+    const neonIcon = L.divIcon({
+        className: 'neon-marker',
+        html: `<div class="glow"></div>`,
+        iconSize: [20,20],
+        iconAnchor: [10,10]
+    });
+    L.marker([lat, lon], {icon: neonIcon})
+      .addTo(map)
+      .bindPopup(`<a href="https://vk.ru/antihype_shokata" target="_blank" style="color:#ff0;font-weight:bold;">${name}</a>`);
+}
+cities.forEach(c=>createNeonMarker(c.lat,c.lon,c.name));
 
-// фон котят (слайд-шоу)
+// фон котят
 const photos=[
 "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=1920&q=80",
 "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?auto=format&fit=crop&w=1920&q=80",
 "https://images.unsplash.com/photo-1507149833265-60c372daea22?auto=format&fit=crop&w=1920&q=80"
 ];
-let i=0;
-const fallback=document.getElementById("fallback");
-function changePhoto(){
-    fallback.style.backgroundImage=`url(${photos[i]})`;
-    i=(i+1)%photos.length;
-}
-changePhoto();
-setInterval(changePhoto,7000);
+let i=0; const fallback=document.getElementById("fallback");
+function changePhoto(){ fallback.style.backgroundImage=`url(${photos[i]})`; i=(i+1)%photos.length; }
+changePhoto(); setInterval(changePhoto,7000);
 </script>
 
 </body>
