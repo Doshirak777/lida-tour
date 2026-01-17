@@ -13,10 +13,19 @@ body {
     font-family: 'Montserrat', sans-serif;
     color: #fff;
     background: #000;
+    overflow-x: hidden;
 }
 
-/* ===== ВИДЕОФОН / СЛАЙД-ФОТО ===== */
-video.bg-video {
+/* ===== фон с котятами ===== */
+.bg-fallback {
+    position: fixed;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: -4;
+    transition: background-image 1.5s ease-in-out;
+}
+.bg-video {
     position: fixed;
     top: 0; left: 0;
     width: 100%;
@@ -24,14 +33,6 @@ video.bg-video {
     object-fit: cover;
     z-index: -3;
     filter: brightness(0.6);
-}
-
-.bg-fallback {
-    position: fixed;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    z-index: -4;
 }
 
 /* ===== overlay ===== */
@@ -42,22 +43,21 @@ video.bg-video {
     padding: 40px 20px 120px;
 }
 
-/* ===== ЗАГОЛОВОК ===== */
+/* ===== заголовок ===== */
 h1 {
     text-align: center;
     font-size: clamp(32px, 6vw, 64px);
     font-weight: 900;
     margin-bottom: 10px;
-    text-shadow: 0 0 30px #ff0055;
+    text-shadow: 0 0 40px #ff0055;
 }
-
 .subtitle {
     text-align: center;
     opacity: 0.85;
     margin-bottom: 30px;
 }
 
-/* ===== КНОПКА ===== */
+/* ===== кнопка ===== */
 .buy {
     display: block;
     margin: 0 auto 50px;
@@ -71,20 +71,19 @@ h1 {
     width: fit-content;
     box-shadow: 0 20px 60px rgba(255,0,85,0.7);
     transition: 0.3s;
-    z-index: 5;
 }
 .buy:hover { transform: scale(1.1); }
 
-/* ===== КАРТА ===== */
+/* ===== интерактивная карта ===== */
 #map {
-    height: 500px;
+    height: 550px;
     max-width: 1200px;
     margin: 60px auto;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
 }
 
-/* ===== ГОРОДА ===== */
+/* ===== список городов ===== */
 .cities {
     max-width: 1200px;
     margin: auto;
@@ -111,18 +110,23 @@ h1 {
     box-shadow: 0 15px 40px rgba(255,0,85,0.7);
 }
 
-/* ===== ФУТЕР ===== */
+/* ===== футер ===== */
 .footer {
     text-align: center;
     margin-top: 80px;
     opacity: 0.6;
     font-size: 14px;
 }
+
+/* ===== мобильная адаптация ===== */
+@media (max-width: 600px){
+    h1 { font-size: 32px; }
+    #map { height: 400px; }
+}
 </style>
 </head>
 <body>
 
-<!-- ===== фон ===== -->
 <div class="bg-fallback" id="fallback"></div>
 <video class="bg-video" autoplay muted loop playsinline>
     <source src="https://cdn.coverr.co/videos/coverr-cute-cat-9713/1080p.mp4" type="video/mp4">
@@ -134,10 +138,10 @@ h1 {
 
 <a class="buy" href="https://vk.ru/antihype_shokata" target="_blank">КУПИТЬ БИЛЕТ</a>
 
-<!-- ===== ИНТЕРАКТИВНАЯ КАРТА ===== -->
+<!-- интерактивная карта -->
 <div id="map"></div>
 
-<!-- ===== ГОРОДА ===== -->
+<!-- список всех 100 городов -->
 <div class="cities">
 <a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Москва</a>
 <a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Санкт-Петербург</a>
@@ -149,76 +153,61 @@ h1 {
 <a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Самара</a>
 <a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Омск</a>
 <a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Ростов-на-Дону</a>
-<!-- Добавь остальные города по той же схеме -->
+<!-- Добавьте остальные города до 100 -->
 </div>
 
 <div class="footer">© Тур по 100 городам • котята • антихайп</div>
 </div>
 
-<!-- ===== Leaflet.js ===== -->
+<!-- Leaflet.js -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-// ===== карта =====
-var map = L.map('map').setView([61, 105], 3); // центр России
+// инициализация карты
+var map = L.map('map').setView([61, 105], 3);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap'
 }).addTo(map);
 
-// ===== координаты всех городов =====
+// координаты 100 крупнейших городов России
 const cities = [
-  {name: "Москва", lat: 55.7558, lon: 37.6173},
-  {name: "Санкт-Петербург", lat: 59.9343, lon: 30.3351},
-  {name: "Новосибирск", lat: 55.0084, lon: 82.9357},
-  {name: "Екатеринбург", lat: 56.8389, lon: 60.6057},
-  {name: "Казань", lat: 55.7961, lon: 49.1064},
-  {name: "Нижний Новгород", lat: 56.2965, lon: 43.9361},
-  {name: "Челябинск", lat: 55.1644, lon: 61.4368},
-  {name: "Самара", lat: 53.1959, lon: 50.1000},
-  {name: "Омск", lat: 54.9885, lon: 73.3242},
-  {name: "Ростов-на-Дону", lat: 47.2357, lon: 39.7015},
-  {name: "Уфа", lat: 54.7388, lon: 55.9721},
-  {name: "Красноярск", lat: 56.0153, lon: 92.8932},
-  {name: "Воронеж", lat: 51.6608, lon: 39.2003},
-  {name: "Пермь", lat: 58.0105, lon: 56.2294},
-  {name: "Волгоград", lat: 48.7080, lon: 44.5133},
-  {name: "Краснодар", lat: 45.0355, lon: 38.9753},
-  {name: "Саратов", lat: 51.5336, lon: 46.0343},
-  {name: "Тюмень", lat: 57.1522, lon: 65.5272},
-  {name: "Тольятти", lat: 53.5078, lon: 49.4204},
-  {name: "Ижевск", lat: 56.8520, lon: 53.2045},
-  {name: "Барнаул", lat: 53.3478, lon: 83.7782},
-  {name: "Ульяновск", lat: 54.3142, lon: 48.4030},
-  {name: "Иркутск", lat: 52.2864, lon: 104.3050},
-  {name: "Хабаровск", lat: 48.4827, lon: 135.0838},
-  {name: "Ярославль", lat: 57.6261, lon: 39.8938},
-  {name: "Владивосток", lat: 43.1155, lon: 131.8855},
-  {name: "Махачкала", lat: 42.9849, lon: 47.5047},
-  {name: "Томск", lat: 56.4977, lon: 84.9744},
-  {name: "Оренбург", lat: 51.7682, lon: 55.0968},
-  {name: "Кемерово", lat: 55.3549, lon: 86.0873},
-  // добавь остальные города здесь
+  {name:"Москва",lat:55.7558,lon:37.6173},{name:"Санкт-Петербург",lat:59.9343,lon:30.3351},
+  {name:"Новосибирск",lat:55.0084,lon:82.9357},{name:"Екатеринбург",lat:56.8389,lon:60.6057},
+  {name:"Казань",lat:55.7961,lon:49.1064},{name:"Нижний Новгород",lat:56.2965,lon:43.9361},
+  {name:"Челябинск",lat:55.1644,lon:61.4368},{name:"Самара",lat:53.1959,lon:50.1000},
+  {name:"Омск",lat:54.9885,lon:73.3242},{name:"Ростов-на-Дону",lat:47.2357,lon:39.7015},
+  {name:"Уфа",lat:54.7388,lon:55.9721},{name:"Красноярск",lat:56.0153,lon:92.8932},
+  {name:"Воронеж",lat:51.6608,lon:39.2003},{name:"Пермь",lat:58.0105,lon:56.2294},
+  {name:"Волгоград",lat:48.7080,lon:44.5133},{name:"Краснодар",lat:45.0355,lon:38.9753},
+  {name:"Саратов",lat:51.5336,lon:46.0343},{name:"Тюмень",lat:57.1522,lon:65.5272},
+  {name:"Тольятти",lat:53.5078,lon:49.4204},{name:"Ижевск",lat:56.8520,lon:53.2045},
+  {name:"Барнаул",lat:53.3478,lon:83.7782},{name:"Ульяновск",lat:54.3142,lon:48.4030},
+  {name:"Иркутск",lat:52.2864,lon:104.3050},{name:"Хабаровск",lat:48.4827,lon:135.0838},
+  {name:"Ярославль",lat:57.6261,lon:39.8938},{name:"Владивосток",lat:43.1155,lon:131.8855},
+  {name:"Махачкала",lat:42.9849,lon:47.5047},{name:"Томск",lat:56.4977,lon:84.9744},
+  {name:"Оренбург",lat:51.7682,lon:55.0968},{name:"Кемерово",lat:55.3549,lon:86.0873}
+  // добавьте остальные города здесь
 ];
 
-// ===== создаём метки =====
-cities.forEach(city => {
-  L.marker([city.lat, city.lon]).addTo(map)
+// создаём метки на карте
+cities.forEach(city=>{
+  L.marker([city.lat,city.lon]).addTo(map)
     .bindPopup(`<a href="https://vk.ru/antihype_shokata" target="_blank">${city.name}</a>`);
 });
 
-// ===== фон котят (fallback) =====
-const photos = [
- "https://images.unsplash.com/photo-1518791841217-8f162f1e1131",
- "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8",
- "https://images.unsplash.com/photo-1507149833265-60c372daea22"
+// фон котят (слайд-шоу)
+const photos=[
+"https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=1920&q=80",
+"https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?auto=format&fit=crop&w=1920&q=80",
+"https://images.unsplash.com/photo-1507149833265-60c372daea22?auto=format&fit=crop&w=1920&q=80"
 ];
-let i = 0;
-const fallback = document.getElementById("fallback");
-function changePhoto() {
-    fallback.style.backgroundImage = `url(${photos[i]})`;
-    i = (i + 1) % photos.length;
+let i=0;
+const fallback=document.getElementById("fallback");
+function changePhoto(){
+    fallback.style.backgroundImage=`url(${photos[i]})`;
+    i=(i+1)%photos.length;
 }
 changePhoto();
-setInterval(changePhoto, 7000);
+setInterval(changePhoto,7000);
 </script>
 
 </body>
