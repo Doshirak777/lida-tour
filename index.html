@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Тур по 100 городам</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    background: #000;
+}
+
+/* ===== ВИДЕОФОН ===== */
+video.bg-video {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -3;
+    filter: brightness(0.6);
+}
+
+/* fallback фон */
+.bg-fallback {
+    position: fixed;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: -4;
+}
+
+/* затемнение */
+.overlay {
+    min-height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.9));
+    backdrop-filter: blur(5px);
+    padding: 40px 20px 120px;
+}
+
+/* ===== ХЕДЕР ===== */
+h1 {
+    text-align: center;
+    font-size: clamp(32px, 6vw, 64px);
+    font-weight: 900;
+    margin-bottom: 10px;
+    text-shadow: 0 0 30px #ff0055;
+}
+
+.subtitle {
+    text-align: center;
+    opacity: 0.85;
+    margin-bottom: 30px;
+}
+
+/* ===== КНОПКА ===== */
+.buy {
+    position: sticky;
+    top: 20px;
+    display: block;
+    margin: 0 auto 50px;
+    padding: 18px 42px;
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(135deg, #ff0055, #ff7a00);
+    border-radius: 50px;
+    width: fit-content;
+    box-shadow: 0 20px 60px rgba(255,0,85,0.7);
+    transition: 0.3s;
+    z-index: 5;
+}
+
+.buy:hover {
+    transform: scale(1.1);
+}
+
+/* ===== КАРТА ===== */
+.map {
+    max-width: 900px;
+    margin: 60px auto;
+    text-align: center;
+}
+
+.map img {
+    width: 100%;
+    border-radius: 30px;
+    opacity: 0.9;
+    transition: 0.3s;
+}
+
+.map img:hover {
+    transform: scale(1.03);
+}
+
+/* ===== ГОРОДА ===== */
+.cities {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 18px;
+}
+
+.city {
+    padding: 15px;
+    text-align: center;
+    background: rgba(255,255,255,0.08);
+    border-radius: 18px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: 0.35s;
+}
+
+.city:hover {
+    transform: translateY(-8px) scale(1.08);
+    background: linear-gradient(135deg, #ff0055, #ff7a00);
+    box-shadow: 0 15px 40px rgba(255,0,85,0.7);
+}
+
+/* ===== ФУТЕР ===== */
+.footer {
+    text-align: center;
+    margin-top: 80px;
+    opacity: 0.6;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- fallback фон -->
+<div class="bg-fallback" id="fallback"></div>
+
+<!-- видеофон -->
+<video class="bg-video" autoplay muted loop playsinline>
+    <source src="https://cdn.coverr.co/videos/coverr-cute-cat-9713/1080p.mp4" type="video/mp4">
+</video>
+
+<div class="overlay">
+
+<h1>ТУР ПО 100 ГОРОДАМ</h1>
+<div class="subtitle">Концерты • Молодёжь • Котята 😼</div>
+
+<a class="buy" href="https://vk.ru/antihype_shokata" target="_blank">
+    КУПИТЬ БИЛЕТ
+</a>
+
+<!-- КАРТА -->
+<div class="map">
+    <h2>Мы едем по всей России</h2>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Russia_blank_map.svg/1280px-Russia_blank_map.svg.png">
+</div>
+
+<!-- ГОРОДА -->
+<div class="cities">
+<a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Москва</a>
+<a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Санкт-Петербург</a>
+<a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Новосибирск</a>
+<a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Екатеринбург</a>
+<a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Казань</a>
+<a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Нижний Новгород</a>
+<a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Челябинск</a>
+<a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Самара</a>
+<a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Омск</a>
+<a class="city" href="https://vk.ru/antihype_shokata" target="_blank">Ростов-на-Дону</a>
+<!-- остальные 100 по той же схеме -->
+</div>
+
+<div class="footer">
+© Тур по 100 городам • котята • антихайп
+</div>
+
+</div>
+
+<script>
+/* fallback фото котят */
+const photos = [
+ "https://images.unsplash.com/photo-1518791841217-8f162f1e1131",
+ "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8",
+ "https://images.unsplash.com/photo-1507149833265-60c372daea22"
+];
+let i = 0;
+const fallback = document.getElementById("fallback");
+
+function changePhoto() {
+    fallback.style.backgroundImage = `url(${photos[i]})`;
+    i = (i + 1) % photos.length;
+}
+changePhoto();
+setInterval(changePhoto, 7000);
+</script>
+
+</body>
+</html>
